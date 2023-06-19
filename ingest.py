@@ -60,7 +60,7 @@ def load_documents(source_dir: str) -> list[Document]:
         # split the load operations into chunks
         for i in range(0, len(paths), chunksize):
             # select a chunk of filenames
-            filepaths = paths[i : (i + chunksize)]
+            filepaths = paths[i: (i + chunksize)]
             # submit the task
             future = executor.submit(load_document_batch, filepaths)
             futures.append(future)
@@ -124,6 +124,9 @@ def main(device_type):
     python_splitter = RecursiveCharacterTextSplitter.from_language(
         language=Language.PYTHON, chunk_size=1000, chunk_overlap=200
     )
+
+    print("text:", text_documents)
+    print("py:", python_documents)
     texts = text_splitter.split_documents(text_documents)
     texts.extend(python_splitter.split_documents(python_documents))
     logging.info(f"Loaded {len(documents)} documents from {SOURCE_DIRECTORY}")
